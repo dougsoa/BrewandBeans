@@ -11,3 +11,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* src/index.css */
+@import url('https://fonts.googleapis.com/css2?family=YourFontName:wght@400;700&display=swap');
+
+body {
+  font-family: 'YourFontName', sans-serif;
+}
+
+
+/* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Adicione seu estilo personalizado aqui */
+
+
