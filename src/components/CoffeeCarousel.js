@@ -27,11 +27,12 @@ function CoffeeCarousel() {
     <div className="relative w-full h-screen overflow-hidden">
       <Slider {...settings}>
         {coffeeImages.map((image, index) => (
-          <div key={index} className="w-full h-screen flex justify-center items-center">
+          <div key={index} className="w-full h-full flex justify-center items-center">
             <img
               src={image}
               alt={`Coffee ${index + 1}`}
               className="w-full h-full object-cover"
+              style={{ maxHeight: '100vh' }} // Garante que a imagem não ultrapasse a altura da tela
             />
           </div>
         ))}

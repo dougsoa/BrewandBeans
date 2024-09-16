@@ -1,9 +1,9 @@
 // src/components/Layout.js
 import React from 'react';
-import { Outlet } from 'react-router-dom'; // Certifique-se de que não há importações duplicadas
+import { Outlet, Link } from 'react-router-dom'; // Use Link para navegação interna
 import { auth } from '../firebaseConfig'; // Importe o auth do Firebase
 
-const Layout = ({ onLogout }) => {
+const Layout = () => {
   const handleLogout = () => {
     auth.signOut()
       .then(() => {
@@ -22,37 +22,37 @@ const Layout = ({ onLogout }) => {
       {/* Menu superior */}
       <header className="w-full bg-white shadow-md py-4 px-8 flex items-center">
         <h1 className="text-2xl font-bold text-dark-brown">
-          <a href="/home">Brew & Beans</a>
+          <Link to="/home">Brew & Beans</Link>
         </h1>
         <p className="text-xl font-semibold text-red-600 ml-2">カフェ</p>
         <nav className="ml-auto">
           <ul className="flex space-x-8 text-dark-brown font-medium">
-            <li><a href="/home" className="hover:text-red-600">Home</a></li>
-            <li><a href="/about" className="hover:text-red-600">About</a></li>
-            <li><a href="/contact" className="hover:text-red-600">Contact</a></li>
+            <li><Link to="/home" className="hover:text-red-600">Home</Link></li>
+            <li><Link to="/about" className="hover:text-red-600">About</Link></li>
+            <li><Link to="/contact" className="hover:text-red-600">Contact</Link></li>
             {user && (
               <>
-                <li><a href="/coffees" className="hover:text-red-600">Coffees</a></li>
-                <li><a href="/coffee-recipes" className="hover:text-red-600">Coffee Recipes</a></li>
-                <li><a href="/ranking" className="hover:text-red-600">Ranking</a></li>
+                <li><Link to="/coffees" className="hover:text-red-600">Coffees</Link></li>
+                <li><Link to="/coffee-recipes" className="hover:text-red-600">Coffee Recipes</Link></li>
+                <li><Link to="/ranking" className="hover:text-red-600">Ranking</Link></li>
               </>
             )}
             {user ? (
               <li><button onClick={handleLogout} className="hover:text-red-600">Logout</button></li>
             ) : (
-              <li><a href="/login" className="hover:text-red-600">Login</a></li>
+              <li><Link to="/login" className="hover:text-red-600">Login</Link></li>
             )}
           </ul>
         </nav>
       </header>
 
       {/* Conteúdo da página */}
-      <main className="flex-grow">
+      <main className="flex-grow"> {/* Remove a margem inferior */}
         <Outlet /> {/* Renderiza o conteúdo das rotas */}
       </main>
 
       {/* Rodapé */}
-      <footer className="fixed bottom-0 w-full bg-dark-brown text-white text-center py-4">
+      <footer className="w-full bg-dark-brown text-white text-center py-4">
         <p className="text-sm">© 2024 Brew & Beans. All rights reserved.</p>
       </footer>
     </div>
