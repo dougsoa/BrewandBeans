@@ -16,6 +16,7 @@ html, body {
 
 .App-main {
   flex: 1; /* Faz o conteúdo principal ocupar o espaço restante */
+  overflow-y: auto; /* Permite rolagem vertical no conteúdo principal */
 }
 
 .App-footer {
@@ -23,4 +24,52 @@ html, body {
   color: white;
   text-align: center;
   padding: 1rem;
+}
+
+/* Estilos específicos para o About */
+.about-container {
+  background-color: #f9f9f9;
+  padding: 20px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.section-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.section-content .text {
+  flex: 1;
+  max-width: 45%;
+  margin: 0 10px;
+}
+
+.section-content .icon {
+  font-size: 4rem; /* Ajuste o tamanho do ícone conforme necessário */
+  color: #333;
+  margin: 0 10px;
+}
+
+@media (max-width: 768px) {
+  .section-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .section-content .text {
+    max-width: 100%;
+    margin: 0;
+  }
+  
+  .section-content .icon {
+    font-size: 3rem;
+    max-width: 100%;
+  }
 }

@@ -4,8 +4,8 @@
 body {
   margin: 0;
   font-family: 'YourFontName', sans-serif; /* Certifique-se de usar a fonte correta */
-  overflow-x: hidden; /* Adiciona isso para garantir que não haja rolagem horizontal */
-  overflow-y: hidden; /* Adiciona isso para garantir que não haja rolagem vertical desnecessária */
+  overflow-x: auto; /* Adiciona isso para garantir que não haja rolagem horizontal */
+  overflow-y: auto; /* Adiciona isso para garantir que não haja rolagem vertical desnecessária */
 }
 
 /* Utilizando Tailwind CSS */
