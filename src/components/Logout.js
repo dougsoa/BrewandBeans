@@ -1,26 +1,27 @@
 // src/components/Logout.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 
-function Logout() {
+const Logout = ({ onLogout }) => {
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      navigate('/home'); // Redireciona para a tela inicial após o logout
-    } catch (error) {
-      console.error('Logout failed', error);
-    }
-  };
+  useEffect(() => {
+    const handleLogout = async () => {
+      try {
+        await signOut(auth);
+        onLogout();
+        navigate('/login');
+      } catch (error) {
+        console.error('Logout failed', error);
+      }
+    };
 
-  return (
-    <button onClick={handleLogout} className="bg-dark-brown hover:bg-brown text-white font-bold py-2 px-4 rounded">
-      Logout
-    </button>
-  );
-}
+    handleLogout();
+  }, [navigate, onLogout]);
+
+  return <div>Logging out...</div>;
+};
 
 export default Logout;

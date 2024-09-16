@@ -1,5 +1,4 @@
-// src/components/Login.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +8,16 @@ function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        navigate('/home');
+      }
+    });
+
+    return () => unsubscribe();
+  }, [navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -22,12 +31,20 @@ function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-dark-brown mb-2">Brew & Beans</h2>
-          <p className="text-xl font-semibold text-red-600">カフェ</p>
-          <h3 className="text-xl font-semibold text-gray-600 mt-4">Login</h3>
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md relative">
+        <div className="flex items-center justify-between mb-8">
+          <button
+            onClick={() => navigate('/home')}
+            className="text-lg text-gray-700 hover:text-gray-900"
+          >
+            &#8592; {/* Código HTML para a seta para a esquerda */}
+          </button>
+          <div className="text-center flex-grow">
+            <h2 className="text-3xl font-bold text-dark-brown mb-2">Brew & Beans</h2>
+            <p className="text-xl font-semibold text-red-600">カフェ</p>
+          </div>
         </div>
+        <h3 className="text-xl font-semibold text-gray-600 mt-4 text-center">Login</h3>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         <form onSubmit={handleLogin}>
           <div className="mb-4">

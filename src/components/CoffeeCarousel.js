@@ -20,18 +20,18 @@ function CoffeeCarousel() {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 3000
+    autoplaySpeed: 3000,
   };
 
   return (
-    <div className="w-full max-w-full mx-auto overflow-hidden">
+    <div className="relative w-full h-screen overflow-hidden">
       <Slider {...settings}>
         {coffeeImages.map((image, index) => (
-          <div key={index} className="flex justify-center">
+          <div key={index} className="w-full h-screen flex justify-center items-center">
             <img
               src={image}
               alt={`Coffee ${index + 1}`}
-              className="w-full h-[82.4vh] object-cover" // Ajuste a altura conforme necessário
+              className="w-full h-full object-cover"
             />
           </div>
         ))}
