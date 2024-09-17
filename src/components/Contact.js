@@ -38,11 +38,6 @@ function Contact() {
           </a>
         </div>
       </div>
-
-      {/* Footer fixo */}
-      <footer className="bg-dark-brown w-full py-4 text-center text-white mt-10">
-        <p className="text-sm">&copy; 2024 Brew & Beans. All rights reserved.</p>
-      </footer>
     </div>
   );
 }
