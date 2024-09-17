@@ -141,49 +141,84 @@ function AddCoffee() {
     <div className="coffees-container min-h-screen bg-gray-50 py-8">
       <section className="max-w-4xl mx-auto px-6 py-12 bg-white shadow-lg rounded-lg">
         {!showForm && (
-          <div className="flex items-center justify-between mb-6">
-            <button
-              className="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-6 rounded-lg shadow-md"
-              onClick={() => setShowForm(true)}
-            >
-              Add Coffee
-            </button>
-
-            <div className="flex items-center space-x-4 ml-auto">
-              <select
-                name="searchAttribute"
-                value={searchAttribute}
-                onChange={(e) => setSearchAttribute(e.target.value)}
-                className="p-2 border border-black rounded-lg shadow-sm"
-                style={{ width: '160px' }}
-              >
-                <option value="bitterness">Bitterness</option>
-                <option value="aroma">Aroma</option>
-                <option value="acidity">Acidity</option>
-                <option value="body">Body</option>
-                <option value="sweetness">Sweetness</option>
-              </select>
-
-              <input
-                type="number"
-                name="searchRating"
-                min="0"
-                max="5"
-                value={searchRating}
-                onChange={(e) => setSearchRating(e.target.value)}
-                className="p-2 border border-black rounded-lg shadow-sm"
-                placeholder="Rating (0-5)"
-                style={{ width: '120px' }}
-              />
-
+          <>
+            <div className="flex items-center justify-between mb-6">
               <button
-                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md"
-                onClick={handleSearch}
+                className="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-6 rounded-lg shadow-md"
+                onClick={() => setShowForm(true)}
               >
-                Search
+                Add Coffee
               </button>
+
+              <div className="flex items-center space-x-4 ml-auto">
+                <select
+                  name="searchAttribute"
+                  value={searchAttribute}
+                  onChange={(e) => setSearchAttribute(e.target.value)}
+                  className="p-2 border border-black rounded-lg shadow-sm"
+                  style={{ width: '160px' }}
+                >
+                  <option value="bitterness">Bitterness</option>
+                  <option value="aroma">Aroma</option>
+                  <option value="acidity">Acidity</option>
+                  <option value="body">Body</option>
+                  <option value="sweetness">Sweetness</option>
+                </select>
+
+                <input
+                  type="number"
+                  name="searchRating"
+                  min="0"
+                  max="5"
+                  value={searchRating}
+                  onChange={(e) => setSearchRating(e.target.value)}
+                  className="p-2 border border-black rounded-lg shadow-sm"
+                  placeholder="Rating (0-5)"
+                  style={{ width: '120px' }}
+                />
+
+                <button
+                  className="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-6 rounded-lg shadow-md"
+                  onClick={handleSearch}
+                >
+                  Search
+                </button>
+              </div>
             </div>
-          </div>
+
+            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {displayedCoffeeList.map((coffee, index) => (
+                <div key={index} className="bg-white p-4 rounded-lg shadow-md border border-gray-300">
+                  {coffee.image && (
+                    <img
+                      src={coffee.image}
+                      alt={coffee.coffeeName}
+                      className="w-full h-40 object-cover rounded-lg mb-4"
+                    />
+                  )}
+                  <h2 className="text-xl font-semibold mb-2">{coffee.coffeeName}</h2>
+                  <p><strong>Location:</strong> {coffee.location}</p>
+                  <p><strong>Temperature:</strong> {coffee.temperature}</p>
+                  <p><strong>Date:</strong> {coffee.date}</p>
+                  <p><strong>Average Rating:</strong> {coffee.averageRating}</p>
+                  <div className="flex justify-between mt-4">
+                    <button
+                      className="bg-teal-600 hover:bg-teal-700 text-white font-bold py-1 px-3 rounded-lg shadow-md"
+                      onClick={() => handleEdit(index)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded-lg shadow-md"
+                      onClick={() => handleDelete(index)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
 
         {showForm && (
@@ -225,13 +260,6 @@ function AddCoffee() {
 
             <div className="mb-6">
               <label className="block text-lg font-semibold text-gray-700 mb-2 flex items-center">
-                Coffee Image
-              </label>
-              <input type="file" accept="image/*" onChange={handleImageChange} className="w-full p-3 border border-black rounded-lg shadow-sm" />
-            </div>
-
-            <div className="mb-6">
-              <label className="block text-lg font-semibold text-gray-700 mb-2">
                 Temperature
               </label>
               <select
@@ -245,27 +273,88 @@ function AddCoffee() {
               </select>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              {['bitterness', 'aroma', 'acidity', 'body', 'sweetness'].map((field) => (
-                <div key={field}>
-                  <label className="block text-lg font-semibold text-gray-700 mb-2">
-                    {field.charAt(0).toUpperCase() + field.slice(1)}
-                  </label>
-                  <input
-                    type="number"
-                    name={field}
-                    value={formData[field]}
-                    onChange={handleNumberChange}
-                    onFocus={handleFocus}
-                    className="p-3 border border-black rounded-lg shadow-sm"
-                    placeholder={`Rate ${field}`}
-                  />
-                </div>
-              ))}
+            <div className="mb-6">
+              <label className="block text-lg font-semibold text-gray-700 mb-2 flex items-center">
+                Bitterness (0-5)
+              </label>
+              <input
+                type="number"
+                name="bitterness"
+                value={formData.bitterness}
+                onChange={handleNumberChange}
+                className="w-full p-3 border border-black rounded-lg shadow-sm"
+                placeholder="Bitterness"
+                min="0"
+                max="5"
+              />
             </div>
 
             <div className="mb-6">
-              <label className="block text-lg font-semibold text-gray-700 mb-2">
+              <label className="block text-lg font-semibold text-gray-700 mb-2 flex items-center">
+                Aroma (0-5)
+              </label>
+              <input
+                type="number"
+                name="aroma"
+                value={formData.aroma}
+                onChange={handleNumberChange}
+                className="w-full p-3 border border-black rounded-lg shadow-sm"
+                placeholder="Aroma"
+                min="0"
+                max="5"
+              />
+            </div>
+
+            <div className="mb-6">
+              <label className="block text-lg font-semibold text-gray-700 mb-2 flex items-center">
+                Acidity (0-5)
+              </label>
+              <input
+                type="number"
+                name="acidity"
+                value={formData.acidity}
+                onChange={handleNumberChange}
+                className="w-full p-3 border border-black rounded-lg shadow-sm"
+                placeholder="Acidity"
+                min="0"
+                max="5"
+              />
+            </div>
+
+            <div className="mb-6">
+              <label className="block text-lg font-semibold text-gray-700 mb-2 flex items-center">
+                Body (0-5)
+              </label>
+              <input
+                type="number"
+                name="body"
+                value={formData.body}
+                onChange={handleNumberChange}
+                className="w-full p-3 border border-black rounded-lg shadow-sm"
+                placeholder="Body"
+                min="0"
+                max="5"
+              />
+            </div>
+
+            <div className="mb-6">
+              <label className="block text-lg font-semibold text-gray-700 mb-2 flex items-center">
+                Sweetness (0-5)
+              </label>
+              <input
+                type="number"
+                name="sweetness"
+                value={formData.sweetness}
+                onChange={handleNumberChange}
+                className="w-full p-3 border border-black rounded-lg shadow-sm"
+                placeholder="Sweetness"
+                min="0"
+                max="5"
+              />
+            </div>
+
+            <div className="mb-6">
+              <label className="block text-lg font-semibold text-gray-700 mb-2 flex items-center">
                 Date
               </label>
               <input
@@ -278,7 +367,7 @@ function AddCoffee() {
             </div>
 
             <div className="mb-6">
-              <label className="block text-lg font-semibold text-gray-700 mb-2">
+              <label className="block text-lg font-semibold text-gray-700 mb-2 flex items-center">
                 Notes
               </label>
               <textarea
@@ -286,65 +375,41 @@ function AddCoffee() {
                 value={formData.notes}
                 onChange={handleInputChange}
                 className="w-full p-3 border border-black rounded-lg shadow-sm"
-                rows="4"
-                placeholder="Additional notes"
+                placeholder="Notes"
               />
             </div>
 
-            <div className="flex items-center justify-between mb-6">
-              <button
-                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md"
-                onClick={calculateAverageRating}
-              >
-                Calculate Rating
-              </button>
-
-              <div className="text-lg font-semibold">
-                Average Rating: {averageRating}
-              </div>
+            <div className="mb-6">
+              <label className="block text-lg font-semibold text-gray-700 mb-2 flex items-center">
+                Image
+              </label>
+              <input
+                type="file"
+                onChange={handleImageChange}
+                className="w-full p-3 border border-black rounded-lg shadow-sm"
+              />
+              {image && <img src={image} alt="Selected Coffee" className="mt-4 w-full h-40 object-cover rounded-lg" />}
             </div>
 
-            <button
-              className="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-6 rounded-lg shadow-md ml-auto"
-              onClick={handleSave}
-            >
-              Save
-            </button>
+            <div className="flex justify-between">
+              <button
+                className="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-6 rounded-lg shadow-md"
+                onClick={() => {
+                  calculateAverageRating();
+                  handleSave();
+                }}
+              >
+                Save
+              </button>
+              <button
+                className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-lg shadow-md"
+                onClick={resetForm}
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         )}
-
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {displayedCoffeeList.map((coffee, index) => (
-            <div key={index} className="bg-white p-4 rounded-lg shadow-md border border-gray-300">
-              {coffee.image && (
-                <img
-                  src={coffee.image}
-                  alt={coffee.coffeeName}
-                  className="w-full h-40 object-cover rounded-lg mb-4"
-                />
-              )}
-              <h2 className="text-xl font-semibold mb-2">{coffee.coffeeName}</h2>
-              <p><strong>Location:</strong> {coffee.location}</p>
-              <p><strong>Temperature:</strong> {coffee.temperature}</p>
-              <p><strong>Date:</strong> {coffee.date}</p>
-              <p><strong>Average Rating:</strong> {coffee.averageRating}</p>
-              <div className="flex justify-between mt-4">
-                <button
-                  className="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded-lg shadow-md"
-                  onClick={() => handleEdit(index)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded-lg shadow-md"
-                  onClick={() => handleDelete(index)}
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
       </section>
     </div>
   );
