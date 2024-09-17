@@ -4,6 +4,7 @@ function AddCoffee() {
   const [showForm, setShowForm] = useState(false);
   const [image, setImage] = useState(null);
   const [formData, setFormData] = useState({
+    coffeeName: '',
     location: '',
     temperature: 'Hot',
     bitterness: '',
@@ -18,7 +19,6 @@ function AddCoffee() {
   const [coffeeList, setCoffeeList] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
   const [filters, setFilters] = useState({
-    location: '',
     temperature: 'Hot',
     bitterness: '',
     aroma: '',
@@ -63,18 +63,22 @@ function AddCoffee() {
   };
 
   const handleSave = () => {
-    const newCoffee = {
-      ...formData,
-      image,
-      averageRating
-    };
     if (editingIndex !== null) {
-      const updatedCoffeeList = coffeeList.map((coffee, index) =>
-        index === editingIndex ? newCoffee : coffee
+      // Update existing coffee
+      const updatedList = coffeeList.map((coffee, index) =>
+        index === editingIndex
+          ? { ...formData, image, averageRating }
+          : coffee
       );
-      setCoffeeList(updatedCoffeeList);
+      setCoffeeList(updatedList);
       setEditingIndex(null);
     } else {
+      // Add new coffee
+      const newCoffee = {
+        ...formData,
+        image,
+        averageRating
+      };
       setCoffeeList([...coffeeList, newCoffee]);
     }
     resetForm();
@@ -83,6 +87,7 @@ function AddCoffee() {
   const resetForm = () => {
     setImage(null);
     setFormData({
+      coffeeName: '',
       location: '',
       temperature: 'Hot',
       bitterness: '',
@@ -109,19 +114,6 @@ function AddCoffee() {
     setCoffeeList(updatedCoffeeList);
   };
 
-  const infoMessages = {
-    bitterness: 'Amargor: Sensação amarga no fundo da língua. Em cafés de qualidade, deve ser leve e discreto. Amargor intenso pode indicar torra escura ou contato excessivo com a água.',
-    aroma: 'Aroma: O cheiro do café. Grãos com torrefação clara têm aromas de amêndoas e nozes, enquanto torrefações escuras têm aromas de especiarias e queimado. Aroma ruim indica baixa qualidade.',
-    acidity: 'Acidez: Sensação nas laterais da língua. Deve ser fresca e cítrica. Em torrefações claras, a acidez é mais pronunciada e desejável. Evite acidez azeda.',
-    sweetness: 'Doçura: Sentida na ponta da língua. Grãos maduros proporcionam doçura natural, como caramelo e chocolate. Grãos verdes ou estragados têm baixa doçura.',
-    body: 'Corpo: Persistência da bebida no paladar. Pode ser intenso e viscoso ou leve e delicado, dependendo da torra e variedade dos grãos.',
-  };
-
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilters({ ...filters, [name]: value });
-  };
-
   const applyFilters = (coffee) => {
     return Object.keys(filters).every((key) => {
       if (filters[key] === '') return true;
@@ -130,15 +122,16 @@ function AddCoffee() {
     });
   };
 
-  const applySearchFilters = (coffee) => {
+  const applyExactRatingFilters = (coffee) => {
     if (searchRating === '') return true;
-    return coffee[searchAttribute] && Number(coffee[searchAttribute]) === Number(searchRating);
+    const rating = Number(searchRating);
+    return coffee[searchAttribute] && Number(coffee[searchAttribute]) === rating;
   };
 
   const handleSearch = () => {
     const result = coffeeList
       .filter(applyFilters)
-      .filter(applySearchFilters);
+      .filter(applyExactRatingFilters);
     setFilteredCoffeeList(result);
   };
 
@@ -204,17 +197,21 @@ function AddCoffee() {
 
             <div className="mb-6">
               <label className="block text-lg font-semibold text-gray-700 mb-2 flex items-center">
-                Coffee Image
+                Coffee Name
               </label>
-              <input type="file" accept="image/*" onChange={handleImageChange} className="w-full p-3 border border-black rounded-lg shadow-sm" />
+              <input
+                type="text"
+                name="coffeeName"
+                value={formData.coffeeName}
+                onChange={handleInputChange}
+                className="w-full p-3 border border-black rounded-lg shadow-sm"
+                placeholder="Coffee Name"
+              />
             </div>
 
             <div className="mb-6">
               <label className="block text-lg font-semibold text-gray-700 mb-2 flex items-center">
                 Location
-                <span className="ml-2 text-gray-600 text-sm cursor-help" title="Onde o café foi cultivado">
-                  <i className="fas fa-info-circle"></i>
-                </span>
               </label>
               <input
                 type="text"
@@ -228,10 +225,14 @@ function AddCoffee() {
 
             <div className="mb-6">
               <label className="block text-lg font-semibold text-gray-700 mb-2 flex items-center">
+                Coffee Image
+              </label>
+              <input type="file" accept="image/*" onChange={handleImageChange} className="w-full p-3 border border-black rounded-lg shadow-sm" />
+            </div>
+
+            <div className="mb-6">
+              <label className="block text-lg font-semibold text-gray-700 mb-2">
                 Temperature
-                <span className="ml-2 text-gray-600 text-sm cursor-help" title="Temperatura do café">
-                  <i className="fas fa-info-circle"></i>
-                </span>
               </label>
               <select
                 name="temperature"
@@ -240,39 +241,32 @@ function AddCoffee() {
                 className="w-full p-3 border border-black rounded-lg shadow-sm"
               >
                 <option value="Hot">Hot</option>
-                <option value="Warm">Warm</option>
                 <option value="Cold">Cold</option>
               </select>
             </div>
 
-            {['bitterness', 'aroma', 'acidity', 'body', 'sweetness'].map((field) => (
-              <div key={field} className="mb-6">
-                <label className="block text-lg font-semibold text-gray-700 mb-2 flex items-center">
-                  {field.charAt(0).toUpperCase() + field.slice(1)}
-                  <span className="ml-2 text-gray-600 text-sm cursor-help" title={infoMessages[field]}>
-                    <i className="fas fa-info-circle"></i>
-                  </span>
-                </label>
-                <input
-                  type="number"
-                  name={field}
-                  value={formData[field]}
-                  onChange={handleNumberChange}
-                  onFocus={handleFocus}
-                  min="0"
-                  max="5"
-                  className="w-full p-3 border border-black rounded-lg shadow-sm"
-                  placeholder="0"
-                />
-              </div>
-            ))}
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              {['bitterness', 'aroma', 'acidity', 'body', 'sweetness'].map((field) => (
+                <div key={field}>
+                  <label className="block text-lg font-semibold text-gray-700 mb-2">
+                    {field.charAt(0).toUpperCase() + field.slice(1)}
+                  </label>
+                  <input
+                    type="number"
+                    name={field}
+                    value={formData[field]}
+                    onChange={handleNumberChange}
+                    onFocus={handleFocus}
+                    className="p-3 border border-black rounded-lg shadow-sm"
+                    placeholder={`Rate ${field}`}
+                  />
+                </div>
+              ))}
+            </div>
 
             <div className="mb-6">
-              <label className="block text-lg font-semibold text-gray-700 mb-2 flex items-center">
+              <label className="block text-lg font-semibold text-gray-700 mb-2">
                 Date
-                <span className="ml-2 text-gray-600 text-sm cursor-help" title="Data em que o café foi degustado">
-                  <i className="fas fa-info-circle"></i>
-                </span>
               </label>
               <input
                 type="date"
@@ -284,84 +278,73 @@ function AddCoffee() {
             </div>
 
             <div className="mb-6">
-              <label className="block text-lg font-semibold text-gray-700 mb-2 flex items-center">
+              <label className="block text-lg font-semibold text-gray-700 mb-2">
                 Notes
-                <span className="ml-2 text-gray-600 text-sm cursor-help" title="Notas adicionais sobre o café">
-                  <i className="fas fa-info-circle"></i>
-                </span>
               </label>
               <textarea
                 name="notes"
                 value={formData.notes}
                 onChange={handleInputChange}
-                rows="3"
                 className="w-full p-3 border border-black rounded-lg shadow-sm"
-                placeholder="Any additional notes..."
+                rows="4"
+                placeholder="Additional notes"
               />
             </div>
 
-            <div className="flex gap-4">
-              <button
-                className="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-6 rounded-lg shadow-md"
-                onClick={handleSave}
-              >
-                Save
-              </button>
+            <div className="flex items-center justify-between mb-6">
               <button
                 className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md"
                 onClick={calculateAverageRating}
               >
-                Calculate Average Rating
+                Calculate Rating
               </button>
-            </div>
 
-            {averageRating > 0 && (
-              <div className="mt-4 text-center">
-                <p className="text-lg font-semibold">Average Rating: {averageRating}/5</p>
+              <div className="text-lg font-semibold">
+                Average Rating: {averageRating}
               </div>
-            )}
-          </div>
-        )}
-
-        {displayedCoffeeList.length > 0 && (
-          <div className="mt-12">
-            <h2 className="text-2xl font-bold mb-6">Added Coffees</h2>
-            <div className="space-y-4">
-              {displayedCoffeeList.map((coffee, index) => (
-                <div key={index} className="bg-white shadow-md rounded-lg p-6 flex items-center relative border border-gray-300">
-                  <div className="absolute top-2 right-2 space-y-2">
-                    <button
-                      className="text-gray-500 hover:text-gray-700 mr-2"
-                      onClick={() => handleEdit(index)}
-                    >
-                      <i className="fas fa-pencil-alt text-xl"></i>
-                    </button>
-                    <button
-                      className="text-red-600 hover:text-red-700"
-                      onClick={() => handleDelete(index)}
-                    >
-                      <i className="fas fa-trash-alt text-xl"></i>
-                    </button>
-                  </div>
-
-                  {coffee.image && (
-                    <img
-                      src={coffee.image}
-                      alt="Coffee"
-                      className="w-20 h-20 object-cover rounded-lg mr-4"
-                    />
-                  )}
-                  <div className="flex-1">
-                    <p><strong>Location:</strong> {coffee.location}</p>
-                    <p><strong>Temperature:</strong> {coffee.temperature}</p>
-                    <p><strong>Date:</strong> {coffee.date}</p>
-                    <p><strong>Average Rating:</strong> {coffee.averageRating}/5</p>
-                  </div>
-                </div>
-              ))}
             </div>
+
+            <button
+              className="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-6 rounded-lg shadow-md ml-auto"
+              onClick={handleSave}
+            >
+              Save
+            </button>
           </div>
         )}
+
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {displayedCoffeeList.map((coffee, index) => (
+            <div key={index} className="bg-white p-4 rounded-lg shadow-md border border-gray-300">
+              {coffee.image && (
+                <img
+                  src={coffee.image}
+                  alt={coffee.coffeeName}
+                  className="w-full h-40 object-cover rounded-lg mb-4"
+                />
+              )}
+              <h2 className="text-xl font-semibold mb-2">{coffee.coffeeName}</h2>
+              <p><strong>Location:</strong> {coffee.location}</p>
+              <p><strong>Temperature:</strong> {coffee.temperature}</p>
+              <p><strong>Date:</strong> {coffee.date}</p>
+              <p><strong>Average Rating:</strong> {coffee.averageRating}</p>
+              <div className="flex justify-between mt-4">
+                <button
+                  className="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded-lg shadow-md"
+                  onClick={() => handleEdit(index)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded-lg shadow-md"
+                  onClick={() => handleDelete(index)}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
     </div>
   );
