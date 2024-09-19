@@ -11,10 +11,10 @@ const Logout = ({ onLogout }) => {
     const handleLogout = async () => {
       try {
         await signOut(auth);
-        onLogout();
-        navigate('/login');
+        onLogout(); // Atualiza o estado de autenticação
+        navigate('/home'); // Redireciona para home
       } catch (error) {
-        console.error('Logout failed', error);
+        console.error('Erro ao deslogar', error);
       }
     };
 

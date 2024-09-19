@@ -19,7 +19,8 @@ function AppRoutes({ isAuthenticated, setIsAuthenticated, onLogin }) {
       <Route element={<Layout />}>
         <Route path="/about" element={<About />} /> {/* Rota para About */}
         <Route path="/contact" element={<Contact />} />
-        <Route path="/" element={<Navigate to="/home" />} />
+        <Route path="/" element={<Navigate to="/home" />} /> {/* Redireciona para Home */}
+        <Route path="/home" element={<Home />} /> {/* Home sempre acessível */}
       </Route>
 
       {/* Rotas públicas sem Layout */}
@@ -29,7 +30,6 @@ function AppRoutes({ isAuthenticated, setIsAuthenticated, onLogin }) {
 
       {/* Rotas protegidas */}
       <Route element={<PrivateRoute element={<Layout />} />}>
-        <Route path="/home" element={<Home />} />
         <Route path="/coffee-recipes" element={<CoffeeRecipes />} />
         <Route path="/ranking" element={<Ranking />} />
         <Route path="/coffees" element={<Coffees />} />
