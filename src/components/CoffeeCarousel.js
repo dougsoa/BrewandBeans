@@ -1,10 +1,7 @@
-// src/components/CoffeeCarousel.js
 import React from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-
-// Importando imagens
 import coffee1 from '../assets/coffee1.jpg';
 import coffee2 from '../assets/coffee2.jpg';
 import coffee3 from '../assets/coffee3.jpg';
@@ -24,15 +21,15 @@ function CoffeeCarousel() {
   };
 
   return (
-    <div className="relative w-full h-screen overflow-hidden">
+    <div className="relative w-full h-screen">
       <Slider {...settings}>
         {coffeeImages.map((image, index) => (
-          <div key={index} className="w-full h-full flex justify-center items-center">
+          <div key={index} className="w-full h-full flex justify-center items-center relative">
             <img
               src={image}
               alt={`Coffee ${index + 1}`}
               className="w-full h-full object-cover"
-              style={{ maxHeight: '100vh' }} // Garante que a imagem não ultrapasse a altura da tela
+              style={{ maxHeight: '100vh' }}
             />
           </div>
         ))}

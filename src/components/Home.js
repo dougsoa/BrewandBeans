@@ -1,6 +1,5 @@
-// src/components/Home.js
 import React from 'react';
-import CoffeeCarousel from './CoffeeCarousel'; // Importe o CoffeeCarousel
+import CoffeeCarousel from './CoffeeCarousel';
 
 function Home() {
   return (
@@ -9,10 +8,10 @@ function Home() {
       <CoffeeCarousel />
 
       {/* Texto sobre o carrossel */}
-      <div className="absolute inset-0 flex flex-col justify-center items-center text-center bg-black bg-opacity-10">
-        <div className="text-white p-4">
-          <h2 className="text-4xl font-bold mb-2">Welcome to Brew & Beans!</h2>
-          <p className="text-lg mb-4">Here you can add and manage your cafes.</p>
+      <div className="absolute inset-0 flex flex-col justify-center items-center text-center bg-black bg-opacity-50 transition-opacity duration-300">
+        <div className="text-white p-6">
+          <h2 className="text-5xl font-extrabold mb-2">Welcome to Brew & Beans!</h2>
+          <p className="text-lg md:text-xl mb-4">Add and manage your cafes with ease.</p>
         </div>
       </div>
     </div>

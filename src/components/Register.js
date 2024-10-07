@@ -25,25 +25,28 @@ function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md relative">
-        <div className="flex items-center justify-between mb-8">
-          <button
-            onClick={() => navigate('/login')}
-            className="text-lg text-gray-700 hover:text-gray-900"
-          >
-            &#8592; {/* Código HTML para a seta para a esquerda */}
-          </button>
-          <div className="text-center flex-grow">
-            <h2 className="text-3xl font-bold text-dark-brown mb-2">Brew & Beans</h2>
-            <p className="text-xl font-semibold text-green-600">カフェ</p>
-          </div>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-100 to-gray-300">
+      <div className="bg-white p-8 md:p-12 rounded-3xl shadow-lg w-full max-w-md transition-all duration-500 transform hover:scale-105 relative">
+
+        {/* Título e Subtítulo */}
+        <div className="text-center mb-6">
+          <h2 className="text-4xl font-extrabold text-dark-brown">Brew & Beans</h2>
+          <p className="text-2xl font-bold text-red-600">カフェ</p>
         </div>
-        <h3 className="text-xl font-semibold text-gray-600 mt-4 text-center">Register</h3>
+
+        {/* Título do Formulário */}
+        <h3 className="text-xl font-semibold text-gray-600 mt-2 mb-4 text-center">Register</h3>
+        
+        {/* Mensagem de Erro */}
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-        <form onSubmit={handleRegister}>
+        
+        {/* Formulário */}
+        <form onSubmit={handleRegister} className="space-y-4">
           <div className="mb-4">
-            <label className="block text-dark-brown text-sm font-semibold mb-2" htmlFor="email">
+            <label
+              className="block text-dark-brown text-sm font-semibold mb-2"
+              htmlFor="email"
+            >
               Email
             </label>
             <input
@@ -51,12 +54,16 @@ function Register() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-dark-brown"
+              placeholder="Enter your email"
               required
             />
           </div>
           <div className="mb-4">
-            <label className="block text-dark-brown text-sm font-semibold mb-2" htmlFor="password">
+            <label
+              className="block text-dark-brown text-sm font-semibold mb-2"
+              htmlFor="password"
+            >
               Password
             </label>
             <input
@@ -64,12 +71,16 @@ function Register() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-dark-brown"
+              placeholder="Enter your password"
               required
             />
           </div>
           <div className="mb-6">
-            <label className="block text-dark-brown text-sm font-semibold mb-2" htmlFor="confirm-password">
+            <label
+              className="block text-dark-brown text-sm font-semibold mb-2"
+              htmlFor="confirm-password"
+            >
               Confirm Password
             </label>
             <input
@@ -77,17 +88,29 @@ function Register() {
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-dark-brown"
+              placeholder="Confirm your password"
               required
             />
           </div>
           <button
             type="submit"
-            className="bg-dark-brown hover:bg-brown text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+            className="w-full bg-dark-brown hover:bg-brown text-white font-bold py-3 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-dark-brown focus:ring-opacity-50"
           >
             Register
           </button>
         </form>
+
+        {/* Link para Login */}
+        <div className="mt-8 text-center">
+          <p className="text-gray-600">Already have an account?</p>
+          <button
+            onClick={() => navigate('/login')}
+            className="text-green-600 font-semibold hover:underline focus:outline-none"
+          >
+            Login
+          </button>
+        </div>
       </div>
     </div>
   );
