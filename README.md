@@ -1,12 +1,5 @@
 # Getting Started with Create React App
 ![Sem título](https://github.com/user-attachments/assets/794778f5-ccf2-4f6d-9fa5-dd8c29520769)
-![about](https://github.com/user-attachments/assets/a4a8fc5e-efab-4fe9-ac63-a39708b1aed0)
-![contact](https://github.com/user-attachments/assets/c756dfd1-9560-43a7-aa92-b7b96921d7e7)
-![coffees](https://github.com/user-attachments/assets/416da64e-e87f-4502-9284-718891c21e0f)
-
-
-
-
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
