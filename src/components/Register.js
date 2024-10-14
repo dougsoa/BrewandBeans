@@ -31,7 +31,6 @@ function Register() {
         {/* Título e Subtítulo */}
         <div className="text-center mb-6">
           <h2 className="text-4xl font-extrabold text-dark-brown">Brew & Beans</h2>
-          <p className="text-2xl font-bold text-red-600">カフェ</p>
         </div>
 
         {/* Título do Formulário */}
